@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kakao Navi Launcher</title>
+
+  <!-- 1) 아래 script 태그는 카카오 문서 "JavaScript SDK 다운로드" 페이지에서 복사해 붙여넣기 -->
+  <!-- https://developers.kakao.com/docs/latest/ko/javascript/download -->
+  <!-- 예: <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.9/kakao.min.js" integrity="..." crossorigin="anonymous"></script> -->
+</head>
+<body>
+  <p>카카오내비를 여는 중…</p>
+
+  <script>
+    // 2) 본인 JavaScript 키 입력
+    Kakao.init('YOUR_JAVASCRIPT_KEY');
+
+    // 3) URL 파라미터: ?name=...&x=경도&y=위도
+    const qs = new URLSearchParams(location.search);
+    const name = qs.get('name') || '목적지';
+    const x = parseFloat(qs.get('x')); // 경도(lng)
+    const y = parseFloat(qs.get('y')); // 위도(lat)
+
+    if (!Number.isFinite(x) || !Number.isFinite(y)) {
+      document.body.innerHTML = '<p>좌표가 없습니다. 예: ?name=집&x=127.123&y=37.456</p>';
+    } else {
+      Kakao.Navi.start({
+        name,
+        x,
+        y,
+        coordType: 'wgs84',
+      });
+    }
+  </script>
+</body>
+</html>
